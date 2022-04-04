@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { Component, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 
 export const GetData : any= () => {
@@ -24,13 +24,14 @@ export const GetData : any= () => {
 
     //function GithubCommit() {
       const [page, setPage] = useState(1);
-      const [commitHistory, setCommitHistory] = useState([]);
+      const [commitHistory, setCommitHistory] = useState<any[]>([]);
       const [isLoading, setIsLoading] = useState(true);
     
       const loadMoreCommit = () => {
         setPage(page + 1);
         console.log("api data = ", commitHistory);
         console.log("api line name = ", commitHistory[0]);
+        console.log("api line name ======= ", commitHistory[0].lineName);
         // try it for yourself try console logging the commitHistory being our JSON data
         // try console logging the 3 parts you wanted like commitHistory[0].lineName there first one is done for you try the other 2
     };
