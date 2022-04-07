@@ -1,10 +1,35 @@
+//imports needed libraries
 import { StatusBar } from 'expo-status-bar';
-import { Component, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import React, { Component, useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Pressable, Image, FlatList} from 'react-native';
+import axios from 'axios';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export const GetData : any= () => {
 
-    const styles = StyleSheet.create({
+   //CSS to style the app
+  const styles = StyleSheet.create({
+
+        heading: {
+          alignItems: 'center',
+          fontSize: 50,
+          fontWeight: 'bold',
+          color: 'blue'
+    
+         },
+
+        img: {
+          width: 250,
+          height: 185,
+          alignItems: 'center'
+        },
+
+        stopName:{
+          alignItems:'center',
+          fontSize: 25,
+          color: 'blue',
+
+        },
 
         button: {
            alignItems: 'center',
@@ -12,7 +37,7 @@ export const GetData : any= () => {
            borderRadius: 0.5,
            borderWidth: 2,
            borderColor: '#000000',
-           backgroundColor: '#CC0000',
+           backgroundColor: 'blue',
         },
          container: {
            flex: 1,
@@ -20,50 +45,125 @@ export const GetData : any= () => {
            alignItems: 'center',
            justifyContent: 'center',
          },
+         buttontext: {
+           color: 'white'
+         }
        });
 
-    //function GithubCommit() {
+    // sets up variables
       const [page, setPage] = useState(1);
-      const [commitHistory, setCommitHistory] = useState<any[]>([]);
+      const [busDetails, setBusDetails] = useState<any[]>([]);
+      const [EstimateDetails, setEstimateDetails] = useState<any[]>([]);
       const [isLoading, setIsLoading] = useState(true);
+
+      const DATA = [
+        {
+          details: busDetails[0],
+          
+        },
+        {
+          details: busDetails[1],
+        },
+        {
+        details: "hello" }
+      ]
     
+      //logs API data to the console for bus arrivals
       const loadMoreCommit = () => {
         setPage(page + 1);
-        console.log("api data = ", commitHistory);
-        console.log("api line name = ", commitHistory[0]);
-        console.log("api line name ======= ", commitHistory[0].lineName);
-        // try it for yourself try console logging the commitHistory being our JSON data
-        // try console logging the 3 parts you wanted like commitHistory[0].lineName there first one is done for you try the other 2
+        console.log("api line name ======= ", busDetails[0].lineName);
+        console.log('api line destination ==',busDetails[0].destinationName);
+        console.log("api estimated time ===", busDetails[0].expectedArrival);
+        console.log("api line name ======= ", busDetails[1].lineName);
+        console.log('api line destination ==', busDetails[1].destinationName);
+        console.log("api estimated time ===", busDetails[1].expectedArrival);
+        console.log("api line name ======= ", busDetails[2].lineName);
+        console.log('api line destination ==', busDetails[2].destinationName);
+        console.log("api estimated time ===", busDetails[2].expectedArrival);
+        console.log("api line name ======= ", busDetails[3].lineName);
+        console.log('api line destination ==', busDetails[3].destinationName);
+        console.log("api estimated time ===", busDetails[3].expectedArrival);
+        console.log("api line name ======= ", busDetails[4].lineName);
+        console.log('api line destination ==', busDetails[4].destinationName);
+        console.log("api estimated time ===", busDetails[4].expectedArrival)
+        
     };
     
-      useEffect(() => {
+    //uses fetch method to get API data form tfl for choosen bus stop https://tfl.gov.uk/bus/stop/490005183E/
+    useEffect(() => {
         fetch('https://api.tfl.gov.uk/StopPoint/490005183E/arrivals', {
           method: 'GET',
         })
           .then((res) => res.json())
           .then((response) => {
-            setCommitHistory(response);
+            setBusDetails(response);
             setIsLoading(false);
           })
           .catch((error) => console.log(error));
       }, [page]);
+
+      var axios = require('axios');
     
+// gets API from Google Maps API to calcuate estimated time
+var config = {
+  method: 'get',
+  url: 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=Chingford%20station&destinations=Balogonie%20road&departure_time=now&key=AIzaSyD_QFoB4g5_KuiyZpHxPK_4vp1HEDWUDPA',
+  headers: { }
+};
+
+axios(config)
+.then(function (response: { data: any; }) {
+  //prints estimated time to console
+  console.log("GOOGLE ESTIMATE FOR LINE 179", JSON.stringify(response.data));
+})
+.catch(function (error: any) {
+  console.log(error);
+});
+
+var config = {
+  method: 'get',
+  url: 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=saolsbury%20hall%20sainsburys&destinations=Balogonie%20road&departure_time=now&key=AIzaSyD_QFoB4g5_KuiyZpHxPK_4vp1HEDWUDPA',
+  headers: { }
+};
+
+axios(config)
+.then(function (response: { data: any; }) {
+  //prints estimated time to console
+  console.log("GOOGLE ESTIMATE FOR LINE 212", JSON.stringify(response.data));
+})
+.catch(function (error: any) {
+  console.log(error);
+});
+const renederItem = () => {
+  <Text>{DATA}</Text>
+}
+    // app screen
       return (
         <View>
-          <Text> API calls</Text>
-          {isLoading && <Text>Wait I'm Loading comments for you</Text>}
+          
+          <Text style={styles.heading}>Find My Bus</Text>
+          {isLoading && <Text>Content Loading...</Text>}
     
+
+          <Image
+           source={require('./bus.jpeg')}
+           style={styles.img}
+           ></Image>
+
+           <Text style={styles.stopName}>Stop:   Balgonie Rd</Text>
+           
           
             <Pressable onPress={loadMoreCommit}
                 style={styles.button}
             >
-                <Text>
-                    Load API Data!
+                <Text style={styles.buttontext}>
+                    Find Next bus
                 </Text>
             </Pressable>
-          
+
+            
     
-          {commitHistory.map((c:any, index:any) => (
+          {busDetails.map((c:any, index:any) => (
             <View key={index}>
               {c.commit && (
                 
@@ -80,11 +180,6 @@ export const GetData : any= () => {
           ))}
         </View>
       );
-    //}
-        
-   // GithubCommit;
-  //  const rootElement = document.getElementById('root');
-//    ReactDOM.render(<GithubCommit />, rootElement);
     
 
 
