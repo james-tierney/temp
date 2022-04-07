@@ -56,6 +56,9 @@ export const GetData : any= () => {
       const [EstimateDetails, setEstimateDetails] = useState<any[]>([]);
       const [isLoading, setIsLoading] = useState(true);
 
+
+
+
       const DATA = [
         {
           details: busDetails[0],
@@ -140,7 +143,13 @@ const renederItem = () => {
     // app screen
       return (
         <View>
-          
+
+          <FlatList
+          style={{backgroundColor: '#9f2288'}}
+          data={busDetails}
+          renderItem={({ item }) => <Text style={{alignContent: 'center'}}>lineID={item.id}</Text>}
+          />
+
           <Text style={styles.heading}>Find My Bus</Text>
           {isLoading && <Text>Content Loading...</Text>}
     
