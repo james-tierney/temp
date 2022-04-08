@@ -50,7 +50,7 @@ export const GetData : any= () => {
          },
 
          row: {
-           width: '95%',
+           width: '99%',
            flex: 1,
            paddingVertical: 25,
            paddingHorizontal: 15,
@@ -168,9 +168,9 @@ const renederItem = () => {
           renderItem={({ item }) => 
           
           <View style={styles.row}>
-          <Text style={{textAlign: 'left', color: '#22DD22'}}>{item.lineName}</Text>
-          <Text style={{ textAlign: 'center'}}>{item.destinationName}</Text>
-          <Text style={{textAlign: 'right'}}>{item.expectedArrival.slice(11,19)}</Text>
+          <Text style={{textAlign: 'left', color: '#22DD22', width: '28%'}}>{item.lineName}</Text>
+          <Text style={{ textAlign: 'center', width: '43%'}}>{item.destinationName}</Text>
+          <Text style={{textAlign: 'right', width: '28%'}}>{item.expectedArrival.slice(11,19)}</Text>
           </View>
           
           }
