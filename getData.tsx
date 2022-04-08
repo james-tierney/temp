@@ -47,6 +47,18 @@ export const GetData : any= () => {
          },
          buttontext: {
            color: 'white'
+         },
+
+         row: {
+           width: '95%',
+           flex: 1,
+           paddingVertical: 25,
+           paddingHorizontal: 15,
+           flexDirection: 'row',
+           justifyContent: 'space-evenly',
+           borderBottomWidth: 1,
+           borderBottomColor: 1,
+           
          }
        });
 
@@ -57,7 +69,13 @@ export const GetData : any= () => {
       const [isLoading, setIsLoading] = useState(true);
 
 
-
+        const renderComponent = (item: any) => {
+            <View>
+            <Text>{item.lineName}</Text>
+            <Text>{item.destinationName}</Text>
+            <Text>{item.expectedArrival}</Text>
+            </View>
+        }
 
       const DATA = [
         {
@@ -145,9 +163,17 @@ const renederItem = () => {
         <View>
 
           <FlatList
-          style={{backgroundColor: '#9f2288'}}
+          style={{backgroundColor: '#9f2288',}}
           data={busDetails}
-          renderItem={({ item }) => <Text style={{alignContent: 'center'}}>lineID={item.id}</Text>}
+          renderItem={({ item }) => 
+          
+          <View style={styles.row}>
+          <Text style={{textAlign: 'left', color: '#22DD22'}}>{item.lineName}</Text>
+          <Text style={{ textAlign: 'center'}}>{item.destinationName}</Text>
+          <Text style={{textAlign: 'right'}}>{item.expectedArrival.slice(11,19)}</Text>
+          </View>
+          
+          }
           />
 
           <Text style={styles.heading}>Find My Bus</Text>
